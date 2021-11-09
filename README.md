@@ -1,2 +1,3 @@
-# TestKodaIntern
-Test for internship with KODA
+# TestKodeIntern
+Test for internship with KODE
+
