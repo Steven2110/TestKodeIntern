@@ -11,6 +11,8 @@
 		B0895807273ABA2F009D7C2D /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0895806273ABA2F009D7C2D /* Skeleton.swift */; };
 		B0895809273ABA30009D7C2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0895808273ABA30009D7C2D /* Assets.xcassets */; };
 		B089580C273ABA30009D7C2D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B089580B273ABA30009D7C2D /* Preview Assets.xcassets */; };
+		B09BD67D273E8D9F0005710B /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09BD67C273E8D9F0005710B /* Model.swift */; };
+		B09BD67F273E8DCE0005710B /* DataImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09BD67E273E8DCE0005710B /* DataImport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		B0895806273ABA2F009D7C2D /* Skeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		B0895808273ABA30009D7C2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B089580B273ABA30009D7C2D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B09BD67C273E8D9F0005710B /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		B09BD67E273E8DCE0005710B /* DataImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +59,8 @@
 				B0895806273ABA2F009D7C2D /* Skeleton.swift */,
 				B0895808273ABA30009D7C2D /* Assets.xcassets */,
 				B089580A273ABA30009D7C2D /* Preview Content */,
+				B09BD67C273E8D9F0005710B /* Model.swift */,
+				B09BD67E273E8DCE0005710B /* DataImport.swift */,
 			);
 			path = KodeTestTask;
 			sourceTree = "<group>";
@@ -137,6 +143,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B09BD67F273E8DCE0005710B /* DataImport.swift in Sources */,
+				B09BD67D273E8D9F0005710B /* Model.swift in Sources */,
 				B0895807273ABA2F009D7C2D /* Skeleton.swift in Sources */,
 				B0895805273ABA2F009D7C2D /* KodeTestTaskApp.swift in Sources */,
 			);
@@ -269,6 +277,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"KodeTestTask/Preview Content\"";
+				DEVELOPMENT_TEAM = F4UY8YURNN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -297,6 +306,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"KodeTestTask/Preview Content\"";
+				DEVELOPMENT_TEAM = F4UY8YURNN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

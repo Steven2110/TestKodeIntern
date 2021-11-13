@@ -7,9 +7,10 @@
 
 import SwiftUI
 
+let departments = ["Все", "Designers", "Analyst", "iOS", "Android", "Management", "QA", "Back office", "Frontend", "Backend", "HR", "PR", "Support"]
+
 struct Skeleton: View {
     @State private var name:String = ""
-    let departments = ["Все", "Designers", "Analyst", "iOS", "Android", "Management", "QA", "Back office", "Frontend", "Backend", "HR", "PR", "Support"]
     var body: some View {
         VStack {
             HStack {
@@ -28,21 +29,24 @@ struct Skeleton: View {
                     ForEach(1..<9){_ in
                         HStack
                         {
-                            Circle().fill(Color.gray).frame(width: 90, height: 90, alignment: .leading).padding(.leading)
+                             
+                            Image("Icon")
+                                .resizable()
+                                .frame(width: 85, height: 85)
+                                .clipShape(Circle())
+                                .padding()
                             VStack(spacing: 8){
-                                Text("aaaaaaaaaaaaaaaaaaaa").redacted(reason: .placeholder)
-                                Text("aaaaaaaaaaaaaaaaaaaa").redacted(reason: .placeholder)
+                                Text("aaaaaaaaaaaaaaaaaaaa")
+                                Text("aaaaaaaaaaaaaaaaaaaa")
                             }
                             Spacer()
                         }
+                        .redacted(reason: .placeholder)
                         Spacer()
                     }
                 }
             }
-            
-            
         }
-        
     }
 }
 

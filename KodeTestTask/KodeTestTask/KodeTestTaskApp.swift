@@ -11,7 +11,8 @@ import SwiftUI
 struct KodeTestTaskApp: App {
     var body: some Scene {
         WindowGroup {
-            Skeleton()
+//            Skeleton()
+            DataImport()
         }
     }
 }
