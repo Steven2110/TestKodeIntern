@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+var onboard = false
+
 class DataModel: ObservableObject {
     @Published var users: [value] = []
     func fetch(){
@@ -25,7 +27,7 @@ class DataModel: ObservableObject {
                     self.users = tableUsers.items
                 }
             } catch {
-                print(error)
+                self.users = []
             }
         }
         task.resume()
@@ -42,35 +44,62 @@ struct DataImport : View{
                     TextField("Search", text: $name)
                 }.padding().overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.5))
                 ScrollView(.horizontal){
-                    HStack(){
+                    HStack{
                         ForEach(departments, id:\.self){ department in
                             Text(department).padding(.all)
                         }
                     }
                 }
-                ScrollView(.vertical){
-                    ForEach(dataModel.users, id:\.self){ user in
-                        HStack(spacing: 50){
-                            AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
-                                .frame(width: 85, height: 85)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.white))
-                            VStack (alignment: .leading, spacing: 8){
-                                HStack{
-                                    Text(user.firstName).bold()
-                                    Text(user.lastName)
-                                }
-                                Text(user.position)
+                List(dataModel.users) { user in
+                    HStack(){
+                        AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
+                            .frame(width: 85, height: 85)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.white))
+                        VStack (alignment: .leading, spacing: 8){
+                            HStack{
+                                Text(user.firstName).bold()
+                                Text(user.lastName)
                             }
-                            Spacer()
+                            Text(user.position)
                         }
+                        Spacer()
                     }
                 }
+                .refreshable{
+                    do{
+                        dataModel.fetch()
+                    } catch {
+                        dataModel.users = []
+                        CriticalError()
+                        
+                    }
+                }
+//                ScrollView(.vertical){
+//                    ForEach(dataModel.users, id:\.self){ user in
+//                        HStack(spacing: 50){
+//                            AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
+//                                .frame(width: 85, height: 85)
+//                                .clipShape(Circle())
+//                                .overlay(Circle().stroke(Color.white))
+//                            VStack (alignment: .leading, spacing: 8){
+//                                HStack{
+//                                    Text(user.firstName).bold()
+//                                    Text(user.lastName)
+//                                }
+//                                Text(user.position)
+//                            }
+//                            Spacer()
+//                        }
+//                    }
+//                }
             }
             .onAppear {
                 dataModel.fetch()
             }
+            
         }
+    var onboard = true
 }
 
 struct DataImportView_Previews: PreviewProvider{

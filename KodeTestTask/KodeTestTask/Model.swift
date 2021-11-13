@@ -11,7 +11,7 @@ struct Items: Codable{
     var items : [value] = Array()
 }
 
-struct value: Codable, Hashable{
+struct value: Codable, Hashable, Identifiable{
     var id : String
     var avatarUrl : String
     var firstName : String
