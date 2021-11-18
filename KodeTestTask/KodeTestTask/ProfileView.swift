@@ -35,6 +35,20 @@ func formatDate(dayOfBirth:String)->String{
     return result
 }
 
+func formatPhonePrint(phone:String)->String{
+    var phoneNum = NSMutableString(string: phone)
+    phoneNum.insert(")", at: 3)
+    phoneNum.insert("-", at: 11)
+    phoneNum.insert("+7 (", at: 0)
+    return phoneNum as String
+}
+
+func formatPhone(phone:String)->String{
+    let phoneNum = NSMutableString(string: phone)
+    phoneNum.insert("8", at: 0)
+    return phoneNum as String
+}
+
 struct ProfileView: View {
     var fName:String
     var lName:String
@@ -88,10 +102,9 @@ struct ProfileView: View {
                         Image(systemName: "phone")
                             .frame(width: 20.03, height: 19.13, alignment: .trailing)
                             .padding([.leading, .bottom, .trailing])
-//                        Text("PHONE NUMBER")
-//                            .fontWeight(.semibold)
-//                            .padding([.bottom, .trailing])
-                        Link(phone, destination: URL(string: phone)!)
+                        let phoneNumPrint = formatPhonePrint(phone: phone)
+                        let phoneNum = "tel://" + formatPhone(phone: phone)
+                        Link(phoneNumPrint, destination: URL(string: phoneNum)!)
                         Spacer()
                     }
                     Divider()
@@ -107,6 +120,5 @@ struct ProfileView: View {
 //struct ProfileView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        ProfileView()
-////        ProfileView(name, role, birthday, phone)
 //    }
 //}
