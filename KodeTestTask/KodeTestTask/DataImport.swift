@@ -7,172 +7,10 @@
 
 import SwiftUI
 
-//class DataModel: ObservableObject {
-//    @Published var users:[value] = []
-//    func fetch(){
-//        let url = URL(string: "https://stoplight.io/mocks/kode-education/trainee-test/25143926/users")!
-//        let task = URLSession.shared.dataTask(with: url) { data, _, error in
-//            guard let data = data, error == nil else {
-//                return
-//            }
-//            let jsonString = String(data: data, encoding: .utf8)!
-//            let jsonData = jsonString.data(using: .utf8)!
-//            do {
-//                let decoder = JSONDecoder()
-//                let tableUsers = try decoder.decode([value].self, from: jsonData)
-//                print(tableUsers)
-//                DispatchQueue.main.async {
-//                    self.users = tableUsers
-//                }
-//            } catch {
-//                print(error)
-//            }
-//        }
-//        task.resume()
-//    }
-//}
-//
-//class datas:ObservableObject{
-//    @Published var jsonData :[value] = []
-//    let url = URL(string: "https://stoplight.io/mocks/kode-education/trainee-test/25143926/users")!
-//    init(){
-//        let session = URLSession(configuration: .default)
-//        session.dataTask(with: url) { data,_,error in
-//            guard let data = data, error == nil else { return }
-//            let jsonString = String(data: data, encoding: .utf8)!
-//            let jsonDatas = jsonString.data(using: .utf8)!
-//            do{
-//                let fetch = try JSONDecoder().decode([value].self, from: jsonDatas)
-//                print(fetch)
-//                DispatchQueue.main.async {
-//                    self.jsonData = fetch
-//                }
-//            }
-//            catch{
-//                print(error)
-//            }
-//        }.resume()
-//    }
-//}
-//
-//struct list : View{
-//    var avatarURL:String
-//    var firstName:String
-//    var lastName:String
-//    var position:String
-//    var body: some View{
-//        HStack{
-//            AsyncImage(url: URL(string: avatarURL), scale: 1)
-//                .frame(width: 85, height: 85)
-//                .clipShape(Circle())
-//                .overlay(Circle().stroke(Color.white))
-//            VStack (alignment: .leading, spacing: 8){
-//                HStack{
-//                    Text(firstName).bold()
-//                    Text(lastName)
-//                }
-//                Text(position)
-//            }
-//            Spacer()
-//        }
-//    }
-//}
-//
-//
-//struct DataImport : View{
-//    @ObservedObject var dataModel = datas()
-//    @StateObject var dataModels = DataModel()
-//    @State var name:String = ""
-//    var body: some View{
-//        NavigationView{
-//                VStack{
-//                    HStack {
-//                        Image(systemName: "magnifyingglass")
-//                        TextField("Search", text: $name)
-//                    }.padding().overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.5))
-//                    ScrollView(.horizontal){
-//                        HStack{
-//                            ForEach(departments, id:\.self){ department in
-//                                Text(department).padding(.all)
-//                            }
-//                        }
-//                    }
-//                    List(dataModels.users) { i in
-//                        HStack{
-//                            AsyncImage(url: URL(string: i.avatarUrl), scale: 1)
-//                                .frame(width: 85, height: 85)
-//                                .clipShape(Circle())
-//                                .overlay(Circle().stroke(Color.white))
-//                            VStack (alignment: .leading, spacing: 8){
-//                                HStack{
-//                                    Text(i.firstName).bold()
-//                                    Text(i.lastName)
-//                                }
-//                                Text(i.position)
-//                            }
-//                            Spacer()
-//                        }
-////                        list(avatarURL: i.avatarUrl, firstName: i.firstName, lastName: i.lastName, position: i.position)
-////                        NavigationLink(destination: ProfileView(name:name,role:role,birthday:birthday,phone:phone)) {
-////
-////                        }
-//                    }
-//                }.navigationBarTitle("")
-//                .navigationBarHidden(true)
-//                .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                .refreshable{
-//                    do{
-//                        dataModels.fetch()
-//                    } catch {
-//                        dataModels.users = []
-//                        CriticalError()
-//
-//                    }
-//                }
-//            }
-////            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .onAppear {
-//                dataModels.fetch()
-//            }
-//
-//        }
-//}
-//
-//struct DataImportView_Previews: PreviewProvider{
-//    static var previews: some View{
-//        DataImport()
-//    }
-//}
-
-
-//import SwiftUI
-//
-var onboard = false
-
-
-class datas:ObservableObject{
-    @Published var jsonData :[value] = []
-    let url = URL(string: "https://api.github.com/users/hadley/orgs")!
-    func fetch(){
-        let session = URLSession(configuration: .default)
-        session.dataTask(with: url) { data,_,error in
-            guard let data = data, error == nil else { return }
-            let jsonString = String(data: data, encoding: .utf8)!
-            let jsonDatas = jsonString.data(using: .utf8)!
-            do{
-                let fetch = try JSONDecoder().decode([value].self, from: jsonDatas)
-                print(fetch)
-                DispatchQueue.main.async {
-                    self.jsonData = fetch
-                }
-            }
-            catch{
-                print(error)
-            }
-        }.resume()
-    }
-}
-
+var filters = [
+    FilterItem(title: "By name", checked: true),
+    FilterItem(title: "By birthday", checked: false)
+]
 
 class DataModel: ObservableObject {
     @Published var users: [value] = []
@@ -200,59 +38,191 @@ class DataModel: ObservableObject {
     }
 }
 
-struct DataImport : View{
-    @StateObject var dataModel = DataModel()
-    @State var name:String = ""
+struct home : View{
     var body: some View{
-        NavigationView{
-            VStack{
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                    TextField("Search", text: $name)
-                }.padding().overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.5))
-                ScrollView(.horizontal){
-                    HStack{
-                        ForEach(departments, id:\.self){ department in
-                            Text(department).padding(.all)
-                        }
-                    }
-                }
-                List(dataModel.users) { user in
-                    NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
-                        HStack{
-                            AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
-                                .frame(width: 85, height: 85)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.white))
-                            VStack (alignment: .leading, spacing: 8){
-                                HStack{
-                                    Text(user.firstName).bold()
-                                    Text(user.lastName)
-                                }
-                                Text(user.position)
-                            }
-                            Spacer()
-                        }
-                    }
-                }
-                .refreshable{
-                    do{
-                        dataModel.fetch()
-                    } catch {
-                        dataModel.users = []
-                        CriticalError()
+        VStack{
+            Text("HEY")
+        }
+    }
+}
 
+struct topBar : View{
+    @Binding var isShowing : Bool
+    @State var name : String = ""
+    @State var tabName : String = "Все"
+    var body: some View{
+        HStack {
+            Image(systemName: "magnifyingglass")
+            TextField("Search", text: $name)
+            Spacer()
+            Button {
+                isShowing.toggle()
+            } label: {
+                Image(systemName: "line.3.horizontal.decrease.circle")
+            }
+
+        }.padding().overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.5))
+        ScrollView(.horizontal, showsIndicators: true){
+            HStack{
+                ForEach(departments, id:\.self){ department in
+                    Button {
+                        tabName = department
+                    } label: {
+                        VStack{
+                            Text(department).padding([.horizontal, .top])
+                            if(department == tabName){
+                                Capsule().frame(width: 75, height: 2)
+                            }
+                        }
                     }
                 }
             }
-            .onAppear {
-                dataModel.fetch()
+        }
+    }
+}
+
+//Radio button
+struct cardView : View{
+    @State var selected : String = "By name"
+    @Environment(\.colorScheme) var colorScheme
+    var body : some View{
+        ForEach(filters, id:\.self){ filter in
+            Button {
+                self.selected = filter.title
+                let i : Int = filter.title=="By name" ? 0 : 1
+                let j : Int = filter.title=="By name" ? 1 : 0
+                filters[i].checked = !filters[i].checked
+                filters[j].checked = !filters[j].checked
+            } label: {
+                HStack(alignment: .center, spacing: 12){
+                    Circle()
+                        .stroke(Color.init(red: 102/255, green: 52/255, blue: 255/255), lineWidth: self.selected==filter.title ? 12 : 4)
+                        .frame(width: 25, height: 25)
+                    Text(filter.title).foregroundColor((colorScheme == .dark) ? Color.white : Color.black)
+                    Spacer()
+                }
+                .padding(.horizontal, 40)
+            }
+        }
+    }
+}
+
+func formatDate2(dayOfBirth:String)->String{
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    let showdate = formatter.date(from: dayOfBirth)
+    
+    formatter.dateFormat = "dd-MM-yy"
+    let result = formatter.string(from: showdate!)
+    
+    return result
+}
+
+struct DataImport : View{
+    @StateObject var dataModel = DataModel()
+    @State var isShowing = false
+    @State private var curHeight: CGFloat = 300
+    let minHeight: CGFloat = 300
+    let maxHeight: CGFloat = 500
+    let startOpacity: Double = 0.4
+    let endOpacity: Double = 0.8
+    var dragPercentage: Double {
+        let res = Double(curHeight - minHeight)/(maxHeight - minHeight)
+        return max(0, min(1,res))
+    }
+    var body: some View{
+        NavigationView{
+            VStack{
+                topBar(isShowing: $isShowing)
+                ZStack(alignment: .bottom) {
+                    let usersNameSorted = self.dataModel.users.sorted{(lhs,rhs)->Bool in
+                        return (lhs.firstName <  rhs.firstName)
+                    }
+                    let usersBirthdaySorted = self.dataModel.users.sorted{(lhs,rhs)->Bool in
+                        return (lhs.birthday <  rhs.birthday)
+                    }
+                    List(filters[0].checked ? usersNameSorted : usersBirthdaySorted) { user in
+                        NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
+                            HStack{
+                                AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
+                                    .frame(width: 85, height: 85)
+                                    .clipShape(Circle())
+                                    .overlay(Circle().stroke(Color.white))
+                                VStack (alignment: .leading, spacing: 8){
+                                    HStack{
+                                        Text(user.firstName).bold()
+                                        Text(user.lastName)
+                                        Text(user.userTag)
+                                            .font(.caption2)
+                                            .foregroundColor(Color.gray)
+                                    }
+                                    Text(user.position)
+                                    
+                                }
+                                Spacer()
+                                if(filters[1].checked){
+                                    Text(formatDate2(dayOfBirth: user.birthday))
+                                }
+                            }
+                        }
+                    }
+                    .refreshable{
+                        do{
+                            dataModel.fetch()
+                        } catch {
+                            dataModel.users = []
+                            CriticalError()
+
+                        }
+                    }
+                    .onAppear{
+                        dataModel.fetch()
+                    }
+                    if isShowing{
+                        Color
+                            .black
+                            .opacity(startOpacity + (endOpacity - startOpacity) * dragPercentage)
+                            .ignoresSafeArea()
+                            .onTapGesture { isShowing = false }
+                        PopUpView()
+                        .transition(.move(edge: .bottom))
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                .ignoresSafeArea()
             }
             .navigationBarTitle(Text("Home"))
             .navigationBarHidden(true)
         }
     }
+    
 }
+
+//struct View1: View {
+//    var body: some View {
+//        Text("View 1")
+//    }
+//}
+//
+//struct View2: View {
+//    var body: some View {
+//        Text("View 2")
+//    }
+//}
+//
+//struct TabItem: View {
+//    var body: some View {
+//        TabView {
+//            ForEach(departments, id:\.self){ department in
+//                View1().tabItem{ Label{Text(department)} icon: {
+//                    Image(systemName: "list")
+//                }}
+//            }
+//        }
+//    }
+//}
+
+
 
 struct DataImportView_Previews: PreviewProvider{
     static var previews: some View{

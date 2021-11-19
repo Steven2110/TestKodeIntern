@@ -36,7 +36,7 @@ func formatDate(dayOfBirth:String)->String{
 }
 
 func formatPhonePrint(phone:String)->String{
-    var phoneNum = NSMutableString(string: phone)
+    let phoneNum = NSMutableString(string: phone)
     phoneNum.insert(")", at: 3)
     phoneNum.insert("-", at: 11)
     phoneNum.insert("+7 (", at: 0)
@@ -45,7 +45,7 @@ func formatPhonePrint(phone:String)->String{
 
 func formatPhone(phone:String)->String{
     let phoneNum = NSMutableString(string: phone)
-    phoneNum.insert("8", at: 0)
+    phoneNum.insert("+7", at: 0)
     return phoneNum as String
 }
 

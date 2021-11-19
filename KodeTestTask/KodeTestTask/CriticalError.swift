@@ -8,22 +8,21 @@
 import SwiftUI
 
 struct CriticalError: View {
-//    func refreshAgain(){
-//        NavigationLink(destination: MainView(), label: {})
-//    }
+    func refreshAgain(){
+        NavigationLink(destination: MainView(), label: {})
+    }
     var body: some View {
-        Text("asjhfkjashf")
-//        VStack{
-//            Image("flying-saucer")
-//            Text("Какой-то сверхразум все сломал")
-//                .font(.title3)
-//                .fontWeight(.bold)
-//            Text("Постараемся быстро починить")
-//            Button(action: {refreshAgain()}) {
-//                Text("Попробовать снова")
-//            }
-//
-//        }
+        VStack{
+            Image("flying-saucer")
+            Text("Какой-то сверхразум все сломал")
+                .font(.title3)
+                .fontWeight(.bold)
+            Text("Постараемся быстро починить")
+            Button(action: {refreshAgain()}) {
+                Text("Попробовать снова")
+            }
+
+        }
     }
 }
 

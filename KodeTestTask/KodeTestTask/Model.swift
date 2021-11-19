@@ -24,3 +24,4 @@ struct value: Codable, Hashable, Identifiable{
     var birthday : String
     var phone : String
 }
+
