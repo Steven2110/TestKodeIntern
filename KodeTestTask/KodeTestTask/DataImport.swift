@@ -77,10 +77,11 @@ struct topBar : View{
                 isShowing.toggle()
             } label: {
                 Image(systemName: "line.3.horizontal.decrease.circle")
+                    .foregroundColor(Color.init(red: 102/255, green: 52/255, blue: 255/255))
             }
 
         }.padding().overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray, lineWidth: 0.5))
-        ScrollView(.horizontal, showsIndicators: true){
+        ScrollView(.horizontal, showsIndicators: false){
             HStack{
                 ForEach(departments, id:\.self){ department in
                     Button {
@@ -92,6 +93,7 @@ struct topBar : View{
                                 .foregroundColor((colorScheme == .dark) ? Color.white : Color.black)
                             if(department == defVal){
                                 Capsule().frame(width: 75, height: 2)
+                                    .foregroundColor(Color.init(red: 102/255, green: 52/255, blue: 255/255))
                             }
                         }
                     }
@@ -166,111 +168,34 @@ struct DataImport : View{
                     List(filters[0].checked ? usersNameSorted : usersBirthdaySorted) { user in
                         if (tabBar == user.department){
                             if(name == ""){
-                                NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
-                                    HStack{
-                                        AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
-                                            .frame(width: 85, height: 85)
-                                            .clipShape(Circle())
-                                            .overlay(Circle().stroke(Color.white))
-                                        VStack (alignment: .leading, spacing: 8){
-                                            HStack{
-                                                Text(user.firstName).bold()
-                                                Text(user.lastName)
-                                                Text(user.userTag)
-                                                    .font(.caption2)
-                                                    .foregroundColor(Color.gray)
-                                            }
-                                            Text(user.position)
-                                            
-                                        }
-                                        Spacer()
-                                        if(filters[1].checked){
-                                            Text(formatDate2(dayOfBirth: user.birthday))
-                                        }
-                                    }
-                                }
+                                SearchView(user: user)
                             }
-                            else if (user.firstName.contains(name) || user.lastName.contains(name))
-                            {
-                                NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
-                                    HStack{
-                                        AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
-                                            .frame(width: 85, height: 85)
-                                            .clipShape(Circle())
-                                            .overlay(Circle().stroke(Color.white))
-                                        VStack (alignment: .leading, spacing: 8){
-                                            HStack{
-                                                Text(user.firstName).bold()
-                                                Text(user.lastName)
-                                                Text(user.userTag)
-                                                    .font(.caption2)
-                                                    .foregroundColor(Color.gray)
-                                            }
-                                            Text(user.position)
-                                            
-                                        }
-                                        Spacer()
-                                        if(filters[1].checked){
-                                            Text(formatDate2(dayOfBirth: user.birthday))
-                                        }
-                                    }
+                            else if (user.firstName.contains(name)){
+                                SearchView(user: user)
+                            }
+                            else if (!user.firstName.contains(name)){
+                                ZStack(alignment: .center){
+                                    Rectangle().frame(width: 360, height: 600).foregroundColor(Color.white)
+                                    NotFoundView()
                                 }
                             }
                         }
                         else if (tabBar == ""){
                             if(name == ""){
-                                NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
-                                    HStack{
-                                        AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
-                                            .frame(width: 85, height: 85)
-                                            .clipShape(Circle())
-                                            .overlay(Circle().stroke(Color.white))
-                                        VStack (alignment: .leading, spacing: 8){
-                                            HStack{
-                                                Text(user.firstName).bold()
-                                                Text(user.lastName)
-                                                Text(user.userTag)
-                                                    .font(.caption2)
-                                                    .foregroundColor(Color.gray)
-                                            }
-                                            Text(user.position)
-                                            
-                                        }
-                                        Spacer()
-                                        if(filters[1].checked){
-                                            Text(formatDate2(dayOfBirth: user.birthday))
-                                        }
-                                    }
-                                }
+                                SearchView(user: user)
                             }
-                            else if (user.firstName.contains(name) || user.lastName.contains(name))
-                            {
-                                NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
-                                    HStack{
-                                        AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
-                                            .frame(width: 85, height: 85)
-                                            .clipShape(Circle())
-                                            .overlay(Circle().stroke(Color.white))
-                                        VStack (alignment: .leading, spacing: 8){
-                                            HStack{
-                                                Text(user.firstName).bold()
-                                                Text(user.lastName)
-                                                Text(user.userTag)
-                                                    .font(.caption2)
-                                                    .foregroundColor(Color.gray)
-                                            }
-                                            Text(user.position)
-                                            
-                                        }
-                                        Spacer()
-                                        if(filters[1].checked){
-                                            Text(formatDate2(dayOfBirth: user.birthday))
-                                        }
-                                    }
+                            else if (user.firstName.contains(name)){
+                                SearchView(user: user)
+                            }
+                            else if (!user.firstName.contains(name)){
+                                ZStack(alignment: .center){
+                                    Rectangle().frame(width: 360, height: 600).foregroundColor(Color.white)
+                                    NotFoundView()
                                 }
                             }
                         }
                     }
+                    .listStyle(.grouped)
                     .refreshable{
                         do{
                             dataModel.fetch()
@@ -282,6 +207,9 @@ struct DataImport : View{
                     .onAppear{
                         dataModel.fetch()
                     }
+//                    if notFound{
+//                        NotFoundView()
+//                    }
                     if isShowing{
                         Color
                             .black
