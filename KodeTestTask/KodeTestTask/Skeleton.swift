@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let departments = ["Все", "Designers", "Analyst", "iOS", "Android", "Management", "QA", "Back office", "Frontend", "Backend", "HR", "PR", "Support"]
+let departments = ["Все", "Design", "Analyst", "iOS", "Android", "Management", "QA", "Back office", "Frontend", "Backend", "HR", "PR", "Support"]
 
 struct Skeleton: View {
     @State private var name:String = ""

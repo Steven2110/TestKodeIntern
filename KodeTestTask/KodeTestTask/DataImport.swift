@@ -12,6 +12,22 @@ var filters = [
     FilterItem(title: "By birthday", checked: false)
 ]
 
+var departmentUser = [
+    "Android" : "android",
+    "iOS" : "ios",
+    "Design" : "design",
+    "Management" : "management",
+    "QA" : "qa",
+    "Back Office" : "back_office",
+    "Frontend" : "frontend",
+    "HR" : "hr",
+    "PR" : "pr",
+    "Backend" : "backend",
+    "Support" : "support",
+    "Analyst" : "analytics",
+    "Все" : ""
+]
+
 class DataModel: ObservableObject {
     @Published var users: [value] = []
     func fetch(){
@@ -48,8 +64,10 @@ struct home : View{
 
 struct topBar : View{
     @Binding var isShowing : Bool
-    @State var name : String = ""
-    @State var tabName : String = "Все"
+    @Binding var tabName : String
+    @Binding var name : String
+    @State  var defVal = "Все"
+    @Environment(\.colorScheme) var colorScheme
     var body: some View{
         HStack {
             Image(systemName: "magnifyingglass")
@@ -66,11 +84,13 @@ struct topBar : View{
             HStack{
                 ForEach(departments, id:\.self){ department in
                     Button {
-                        tabName = department
+                        tabName = departmentUser[department]!
+                        defVal = department
                     } label: {
                         VStack{
                             Text(department).padding([.horizontal, .top])
-                            if(department == tabName){
+                                .foregroundColor((colorScheme == .dark) ? Color.white : Color.black)
+                            if(department == defVal){
                                 Capsule().frame(width: 75, height: 2)
                             }
                         }
@@ -121,6 +141,8 @@ func formatDate2(dayOfBirth:String)->String{
 struct DataImport : View{
     @StateObject var dataModel = DataModel()
     @State var isShowing = false
+    @State var tabBar : String = ""
+    @State var name : String = ""
     @State private var curHeight: CGFloat = 300
     let minHeight: CGFloat = 300
     let maxHeight: CGFloat = 500
@@ -133,7 +155,7 @@ struct DataImport : View{
     var body: some View{
         NavigationView{
             VStack{
-                topBar(isShowing: $isShowing)
+                topBar(isShowing: $isShowing, tabName: $tabBar, name: $name)
                 ZStack(alignment: .bottom) {
                     let usersNameSorted = self.dataModel.users.sorted{(lhs,rhs)->Bool in
                         return (lhs.firstName <  rhs.firstName)
@@ -142,26 +164,109 @@ struct DataImport : View{
                         return (lhs.birthday <  rhs.birthday)
                     }
                     List(filters[0].checked ? usersNameSorted : usersBirthdaySorted) { user in
-                        NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
-                            HStack{
-                                AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
-                                    .frame(width: 85, height: 85)
-                                    .clipShape(Circle())
-                                    .overlay(Circle().stroke(Color.white))
-                                VStack (alignment: .leading, spacing: 8){
+                        if (tabBar == user.department){
+                            if(name == ""){
+                                NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
                                     HStack{
-                                        Text(user.firstName).bold()
-                                        Text(user.lastName)
-                                        Text(user.userTag)
-                                            .font(.caption2)
-                                            .foregroundColor(Color.gray)
+                                        AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
+                                            .frame(width: 85, height: 85)
+                                            .clipShape(Circle())
+                                            .overlay(Circle().stroke(Color.white))
+                                        VStack (alignment: .leading, spacing: 8){
+                                            HStack{
+                                                Text(user.firstName).bold()
+                                                Text(user.lastName)
+                                                Text(user.userTag)
+                                                    .font(.caption2)
+                                                    .foregroundColor(Color.gray)
+                                            }
+                                            Text(user.position)
+                                            
+                                        }
+                                        Spacer()
+                                        if(filters[1].checked){
+                                            Text(formatDate2(dayOfBirth: user.birthday))
+                                        }
                                     }
-                                    Text(user.position)
-                                    
                                 }
-                                Spacer()
-                                if(filters[1].checked){
-                                    Text(formatDate2(dayOfBirth: user.birthday))
+                            }
+                            else if (user.firstName.contains(name) || user.lastName.contains(name))
+                            {
+                                NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
+                                    HStack{
+                                        AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
+                                            .frame(width: 85, height: 85)
+                                            .clipShape(Circle())
+                                            .overlay(Circle().stroke(Color.white))
+                                        VStack (alignment: .leading, spacing: 8){
+                                            HStack{
+                                                Text(user.firstName).bold()
+                                                Text(user.lastName)
+                                                Text(user.userTag)
+                                                    .font(.caption2)
+                                                    .foregroundColor(Color.gray)
+                                            }
+                                            Text(user.position)
+                                            
+                                        }
+                                        Spacer()
+                                        if(filters[1].checked){
+                                            Text(formatDate2(dayOfBirth: user.birthday))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (tabBar == ""){
+                            if(name == ""){
+                                NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
+                                    HStack{
+                                        AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
+                                            .frame(width: 85, height: 85)
+                                            .clipShape(Circle())
+                                            .overlay(Circle().stroke(Color.white))
+                                        VStack (alignment: .leading, spacing: 8){
+                                            HStack{
+                                                Text(user.firstName).bold()
+                                                Text(user.lastName)
+                                                Text(user.userTag)
+                                                    .font(.caption2)
+                                                    .foregroundColor(Color.gray)
+                                            }
+                                            Text(user.position)
+                                            
+                                        }
+                                        Spacer()
+                                        if(filters[1].checked){
+                                            Text(formatDate2(dayOfBirth: user.birthday))
+                                        }
+                                    }
+                                }
+                            }
+                            else if (user.firstName.contains(name) || user.lastName.contains(name))
+                            {
+                                NavigationLink(destination: ProfileView(fName: user.firstName, lName: user.lastName, url_pp: user.avatarUrl, role: user.position, birthday: user.birthday, phone: user.phone, tag: user.userTag)) {
+                                    HStack{
+                                        AsyncImage(url: URL(string: user.avatarUrl), scale: 1)
+                                            .frame(width: 85, height: 85)
+                                            .clipShape(Circle())
+                                            .overlay(Circle().stroke(Color.white))
+                                        VStack (alignment: .leading, spacing: 8){
+                                            HStack{
+                                                Text(user.firstName).bold()
+                                                Text(user.lastName)
+                                                Text(user.userTag)
+                                                    .font(.caption2)
+                                                    .foregroundColor(Color.gray)
+                                            }
+                                            Text(user.position)
+                                            
+                                        }
+                                        Spacer()
+                                        if(filters[1].checked){
+                                            Text(formatDate2(dayOfBirth: user.birthday))
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -172,7 +277,6 @@ struct DataImport : View{
                         } catch {
                             dataModel.users = []
                             CriticalError()
-
                         }
                     }
                     .onAppear{
@@ -197,32 +301,6 @@ struct DataImport : View{
     }
     
 }
-
-//struct View1: View {
-//    var body: some View {
-//        Text("View 1")
-//    }
-//}
-//
-//struct View2: View {
-//    var body: some View {
-//        Text("View 2")
-//    }
-//}
-//
-//struct TabItem: View {
-//    var body: some View {
-//        TabView {
-//            ForEach(departments, id:\.self){ department in
-//                View1().tabItem{ Label{Text(department)} icon: {
-//                    Image(systemName: "list")
-//                }}
-//            }
-//        }
-//    }
-//}
-
-
 
 struct DataImportView_Previews: PreviewProvider{
     static var previews: some View{
